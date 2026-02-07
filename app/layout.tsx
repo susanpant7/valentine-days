@@ -13,7 +13,7 @@ const dancingScript = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Rose Day Surprise 🌹",
+  title: "Happy Rose Day 🌹",
   description: "A special Valentine's wish full of love",
 };
 

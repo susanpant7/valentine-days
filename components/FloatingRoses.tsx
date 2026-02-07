@@ -2,34 +2,38 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-const Rose = ({ delay }: { delay: number }) => {
-  const [coords, setCoords] = useState<{ x: string; size: string } | null>(null);
+const Rose = ({ index }: { index: number }) => {
+  const [coords, setCoords] = useState<{ x: string; size: string; duration: number; startY: string } | null>(null);
 
   useEffect(() => {
     setCoords({
-      x: `${Math.random() * 100}vw`,
-      size: `${1.5 + Math.random() * 2}rem`
+      // Spread across the full width
+      x: `${(index * 1.25) % 100}vw`, 
+      size: `${1 + Math.random() * 2}rem`,
+      duration: 7 + Math.random() * 8,
+      // Start them at random heights so the screen is full instantly
+      startY: `${Math.random() * -100}vh` 
     });
-  }, []);
+  }, [index]);
 
   if (!coords) return null;
 
   return (
     <motion.div
-      initial={{ y: "110vh", x: coords.x, opacity: 0, rotate: 0 }}
+      initial={{ y: coords.startY, x: coords.x, opacity: 0, rotate: 0 }}
       animate={{ 
-        y: "-20vh", 
+        y: "110vh", // Falling to the bottom
         opacity: [0, 1, 1, 0],
         rotate: 360,
       }}
       transition={{ 
-        duration: 8 + Math.random() * 7, 
+        duration: coords.duration, 
         repeat: Infinity, 
-        delay, 
+        delay: 0, 
         ease: "linear" 
       }}
       style={{ fontSize: coords.size }}
-      className="fixed pointer-events-none z-[40] drop-shadow-md" // Higher z-index to float over text
+      className="fixed pointer-events-none z-[40] drop-shadow-lg will-change-transform"
     >
       🌹
     </motion.div>
@@ -38,15 +42,19 @@ const Rose = ({ delay }: { delay: number }) => {
 
 export default function FloatingRoses() {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!mounted) return null;
 
   return (
-    <>
-      {/* 30 Roses for a "More Roses" feel */}
-      {Array.from({ length: 30 }).map((_, i) => (
-        <Rose key={i} delay={i * 0.8} />
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-40">
+      {/* 80 Roses for a heavy "Rose Rain" effect */}
+      {Array.from({ length: 80 }).map((_, i) => (
+        <Rose key={i} index={i} />
       ))}
-    </>
+    </div>
   );
 }
