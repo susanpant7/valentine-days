@@ -12,8 +12,13 @@ export default function ValentinePage() {
 
   // Preload assets for zero-latency transitions
   useEffect(() => {
-    STEPS.forEach((s) => { const img = new Image(); img.src = s.image; });
-    const v = document.createElement("video"); v.src = "/letsgo.MP4"; v.preload = "auto";
+    STEPS.forEach((s) => {
+      const img = new Image();
+      img.src = s.image;
+    });
+    const v = document.createElement("video");
+    v.src = "/letsgo.MP4";
+    v.preload = "auto";
   }, []);
 
   const isLastStep = step === STEPS.length - 1;
@@ -29,18 +34,19 @@ export default function ValentinePage() {
      * [x, y] coordinates
      */
     const points = [
-      [0, -h * 0.4],       // Top Center (near image)
+      [0, -h * 0.4], // Top Center (near image)
       [-w * 0.4, -h * 0.2], // Top Left
-      [w * 0.4, -h * 0.2],  // Top Right
-      [-w * 0.7, 0],       // Mid Left (outside button row)
-      [0, h * 0.2],        // Bottom Center
+      [w * 0.4, -h * 0.2], // Top Right
+      [-w * 0.7, 0], // Mid Left (outside button row)
+      [0, h * 0.2], // Bottom Center
       [-w * 0.4, h * 0.15], // Bottom Left
-      [w * 0.4, h * 0.15],  // Bottom Right
+      [w * 0.4, h * 0.15], // Bottom Right
     ];
 
     // Filter out current point to ensure it always jumps
-    const otherPoints = points.filter(p => p[1] !== noOffset.y);
-    const [nextX, nextY] = otherPoints[Math.floor(Math.random() * otherPoints.length)];
+    const otherPoints = points.filter((p) => p[1] !== noOffset.y);
+    const [nextX, nextY] =
+      otherPoints[Math.floor(Math.random() * otherPoints.length)];
 
     setNoOffset({ x: nextX, y: nextY });
   };
@@ -55,13 +61,40 @@ export default function ValentinePage() {
 
   if (hasAccepted) {
     return (
-      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center p-6 text-center">
+      <main className="relative z-10 flex min-h-screen flex-col items-center justify-center p-6">
         <FloatingRoses />
-        <div className="flex flex-col items-center gap-6 w-full max-w-lg rounded-[2.5rem] border border-white/20 shadow-2xl bg-white/10 backdrop-blur-xl p-4 animate-in fade-in zoom-in duration-300">
-          <h2 className="text-white text-3xl md:text-5xl font-serif italic font-bold pt-4 drop-shadow-lg">
-            Susan ❤️ Karuna
-          </h2>
-          <video src="/letsgo.MP4" autoPlay loop muted playsInline className="w-full h-auto max-h-[60vh] object-cover rounded-4xl" />
+
+        <div className="relative flex flex-col items-center w-full max-w-lg overflow-hidden rounded-[3rem] border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-white/10 backdrop-blur-2xl transition-all animate-in fade-in zoom-in duration-700">
+          {/* Main Heading */}
+          <div className="px-8 pb-6 text-center">
+            <h4 className="text-white text-2xl md:text-3xl font-serif italic font-bold leading-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)]">
+              Susan{" "}
+              <span className="text-2xl align-middle mx-2 opacity-80 not-italic">
+                ❤️
+              </span>{" "}
+              Karuna
+            </h4>
+            <p className="mt-3 text-lg md:text-xl text-pink-100/80 font-light tracking-wide italic">
+              "Let&apos;s go celebrate our love..."
+            </p>
+          </div>
+
+          {/* Video Container with "Film Frame" feel */}
+          <div className="relative w-full px-4 pb-4">
+            <div className="relative overflow-hidden rounded-4xl border border-white/20 shadow-inner group">
+              {/* Subtle Overlay to make video blend */}
+              <div className="absolute inset-0 z-10 bg-linear-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+
+              <video
+                src="/letsgo.MP4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-auto max-h-[55vh] object-cover transform transition-transform duration-700 group-hover:scale-105"
+              />
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -86,7 +119,7 @@ export default function ValentinePage() {
 
         <div className="mb-10 min-h-20 flex items-center justify-center">
           <p className="text-2xl md:text-3xl font-serif italic font-bold leading-tight text-white">
-             {STEPS[step].question}
+            {STEPS[step].question}
           </p>
         </div>
 
@@ -101,12 +134,17 @@ export default function ValentinePage() {
           <div className="flex-1 relative flex items-center justify-center">
             <button
               onMouseEnter={moveButton}
-              onTouchStart={(e) => { e.preventDefault(); moveButton(); }}
+              onTouchStart={(e) => {
+                e.preventDefault();
+                moveButton();
+              }}
               onClick={handleNoInteraction}
               style={{
                 position: isLastStep ? "absolute" : "relative",
                 // translate3d uses the GPU for much faster, "snappier" movement
-                transform: isLastStep ? `translate3d(${noOffset.x}px, ${noOffset.y}px, 0)` : "none",
+                transform: isLastStep
+                  ? `translate3d(${noOffset.x}px, ${noOffset.y}px, 0)`
+                  : "none",
                 transition: isLastStep ? "transform 0.1s ease-out" : "none",
               }}
               className={`w-full rounded-full py-4 text-lg font-bold z-30 whitespace-nowrap ${
