@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useRef, useLayoutEffect } from "react";
 import { STEPS } from "@/lib/ValentineQuestions";
+import FloatingRoses from "@/components/FloatingRoses";
 
 export default function ValentinePage() {
   const [step, setStep] = useState(0);
@@ -36,6 +37,8 @@ export default function ValentinePage() {
   if (hasAccepted) {
     return (
       <main className="relative z-10 flex min-h-screen flex-col items-center justify-center p-6 text-center">
+        <FloatingRoses />
+
         <div className="flex flex-col items-center gap-4 w-full max-w-lg overflow-hidden rounded-4xl border border-white/20 shadow-2xl bg-white/10 backdrop-blur-md">
           {/* Video Title */}
           <h2 className="text-white text-2xl md:text-3xl font-bold mt-4">
@@ -58,6 +61,8 @@ export default function ValentinePage() {
 
   return (
     <main className="relative z-10 flex min-h-screen flex-col items-center justify-center p-4">
+      <FloatingRoses />
+
       <div
         ref={cardRef}
         className="flex flex-col items-center rounded-[3rem] bg-white/10 p-8 md:p-12 backdrop-blur-3xl border border-white/20 shadow-2xl text-center max-w-md w-full transition-all duration-500"
@@ -99,7 +104,7 @@ export default function ValentinePage() {
                 : "relative z-10 bg-white/20 text-rose-100 hover:bg-rose-500/30"
             }`}
           >
-            No? 😂
+            No
           </button>
         </div>
       </div>
